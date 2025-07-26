@@ -2,7 +2,7 @@
 
 ## 📝 Summary
 
-This project demonstrates the implementation of **Azure Active Directory (Azure AD) Identity Protection** by configuring demo users, enabling **Multi-Factor Authentication (MFA)**, and enforcing a **Conditional Access Policy** to restrict login access from outside a specific region (e.g., the United States). The goal is to simulate real-world identity protection scenarios and provide a hands-on learning experience in managing Azure security controls.
+This project demonstrates the implementation of **Azure Active Directory (Azure AD) Identity Protection** by configuring demo users, enabling **Multi-Factor Authentication (MFA)**, and enforcing a **Conditional Access Policy** to restrict login access from outside a specific region (e.g., the United Kingdom). The goal is to simulate real-world identity protection scenarios and provide a hands-on learning experience in managing Azure security controls.
 
 ---
 
@@ -23,7 +23,7 @@ A company wants to secure its cloud environment by:
 - Enforcing MFA for specific users.
 - Blocking access to users attempting to log in from outside approved geographic locations.
 
-You’ll simulate this setup using two demo users and enforce region-based conditional access.
+I am going to simulate this setup using two demo users and enforce region-based conditional access.
 
 ---
 
@@ -31,20 +31,20 @@ You’ll simulate this setup using two demo users and enforce region-based condi
 
 ### 1. 👥 Create Demo Users
 
-1. Navigate to: `Azure Portal → Azure Active Directory → Users → + New User`
+1. Navigate to: `Azure Portal → Azure Entra ID → Users → + New User`
 2. Create two users:
-   - `az900user1@yourtenant.onmicrosoft.com`
-   - `az900user2@yourtenant.onmicrosoft.com`
+   - `demouser1@my_tenant.onmicrosoft.com`
+   - `demouser2@my_tenant.onmicrosoft.com`
 3. Uncheck “Auto-generate password” and set custom passwords for both.
 
 ---
 
 ### 2. 🔐 Enable MFA for User1
 
-1. Go to: `Azure AD → Users → Select az900user1`
-2. Click on **Multi-Factor Authentication**.
+1. Go to: `Azure AD → Users → Select demouser1`
+2. Click on **per user MFA**.
 3. In the MFA portal:
-   - Select `az900user1`.
+   - Select both users.
    - Click **Enable** → Confirm.
 
 ---
@@ -53,13 +53,13 @@ You’ll simulate this setup using two demo users and enforce region-based condi
 
 1. Navigate to: `Azure AD → Security → Conditional Access → + New policy`
 2. Configure the policy:
-   - **Name**: `Block-Outside-US`
-   - **Users**: Select → `az900user1`
+   - **Name**: `Block-Outside-UK`
+   - **Users**: Select → `demouser1`
    - **Cloud apps**: All cloud apps
    - **Conditions**:
      - Locations → Configure → Yes
      - **Include**: Any location
-     - **Exclude**: United States *(or your region)*
+     - **Exclude**: United Kingdom *(or your region)*
    - **Access controls**: Grant → Block access
    - Enable policy → **On** → Click **Create**
 
@@ -67,7 +67,7 @@ You’ll simulate this setup using two demo users and enforce region-based condi
 
 ### 4. 🔍 Test the Policy
 
-- Attempt to sign in as `az900user1` from a VPN located outside your country.
+- Attempt to sign in as `demouser1` from a VPN located outside your country.
 - Access should be blocked based on the Conditional Access Policy.
 
 ---
@@ -75,14 +75,15 @@ You’ll simulate this setup using two demo users and enforce region-based condi
 ### 5. 📊 Review Sign-in Logs
 
 1. Go to: `Azure AD → Sign-in logs`
-2. Filter by **User**: `az900user1`
+2. Filter by **User**: `demouser1`
 3. Analyze logs for blocked attempts and conditional access events.
+4. We can also check other sign in activities and log status here.
 
 ---
 
 ### 🧹 Cleanup
 
 - Delete the test users:
-  - `Azure AD → Users → Delete az900user1 and az900user2`
+  - `Azure AD → Users → Delete demouser1 and demouser2`
 - Disable or delete the Conditional Access Policy:
-  - `Azure AD → Conditional Access → Select and delete Block-Outside-US`
+  - `Azure AD → Conditional Access → Select and delete Block-Outside-UK`
